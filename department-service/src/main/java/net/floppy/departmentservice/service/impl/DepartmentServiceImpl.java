@@ -3,7 +3,6 @@ package net.floppy.departmentservice.service.impl;
 import lombok.AllArgsConstructor;
 import net.floppy.departmentservice.dto.DepartmentDto;
 import net.floppy.departmentservice.entity.Department;
-import net.floppy.departmentservice.mapper.DepartmentMapper;
 import net.floppy.departmentservice.repository.DepartmentRepo;
 import net.floppy.departmentservice.service.DepartmentService;
 import org.springframework.stereotype.Service;
@@ -25,4 +24,14 @@ public class DepartmentServiceImpl implements DepartmentService {
                 saved_department.getDepartmentDescription(),saved_department.getDepartmentCode());
         return department_dto;
     }
+
+    @Override
+    public DepartmentDto getDepartmentDto(String depCode) {
+        Department department = departmentRepo.findByDepartmentCode(depCode);
+        DepartmentDto dto = new DepartmentDto(department.getId(),
+                department.getDepartmentName(),department.getDepartmentDescription(),department.getDepartmentCode());
+        return dto;
+    }
+
+
 }
