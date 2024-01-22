@@ -18,6 +18,7 @@
 		<org.mapstruct.version>1.6.0.Beta1</org.mapstruct.version> <!--	added for mapStruct	-->
 		<org.projectlombok.version>1.18.30</org.projectlombok.version> <!--	added for mapStruct	-->
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version><!--	added for mapStruct	-->
+		<spring-cloud.version>2023.0.0</spring-cloud.version> <!--added for cloud Openfeign to make microservice communication-->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -28,7 +29,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency> <!--added for Webclient to make sync call to dep service-->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
@@ -55,8 +59,25 @@
 			<artifactId>mapstruct</artifactId>
 			<version>${org.mapstruct.version}</version>
 		</dependency>
-	</dependencies>
 
+		<dependency> <!--added for cloud Openfeign to make microservice communication-->
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+	</dependencies>
+	<!--added for cloud Openfeign to make microservice communication-->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<!--added for cloud Openfeign to make microservice communication-->
 	<build>
 		<plugins>
 			<plugin>

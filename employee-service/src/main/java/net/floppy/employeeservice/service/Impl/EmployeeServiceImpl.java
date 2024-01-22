@@ -1,6 +1,8 @@
 package net.floppy.employeeservice.service.Impl;
 
 import lombok.AllArgsConstructor;
+import net.floppy.employeeservice.dto.ApiResponseDto;
+import net.floppy.employeeservice.dto.DepartmentDto;
 import net.floppy.employeeservice.dto.EmployeeDto;
 import net.floppy.employeeservice.entity.Employee;
 import net.floppy.employeeservice.exception.ResourceNotFoundException;
@@ -8,12 +10,18 @@ import net.floppy.employeeservice.mapper.EmployeeMapper;
 import net.floppy.employeeservice.repository.EmployeeRepository;
 import net.floppy.employeeservice.service.EmployeeService;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
+//    private RestTemplate restTemplate;
+//    private WebClient webClient;
+    private APIFeignClient apiFeignClient;
     private EmployeeRepository employeeRepository;
 
     private ModelMapper modelMapper;
@@ -41,9 +49,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDto getEmpById(Long id) {
+    public ApiResponseDto getEmpById(Long id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Employee","EmployeeID",id));
+/*REST TEMPLATE*/
+//        ResponseEntity<DepartmentDto> responseEntity =
+//                restTemplate.getForEntity("http://localhost:8080/api/departments/"+
+//                        employee.getDepartmentCode(), DepartmentDto.class);
+//
+//        DepartmentDto departmentDto = responseEntity.getBody();
+/*WEBCLIENT*/
+//        DepartmentDto departmentDto = webClient.get().uri("http://localhost:8080/api/departments/"+
+//         employee.getDepartmentCode()).retrieve().bodyToMono(DepartmentDto.class).block();
+
+   /*SPRING CLOUD OPENFEIGN*/
+        DepartmentDto departmentDto = apiFeignClient.GetDepartmentCode(employee.getDepartmentCode());
+
 
 //        EmployeeDto employeeDto = new EmployeeDto(
 //                employee.getId(),
@@ -53,6 +74,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 //        );
 //        EmployeeDto empDto = modelMapper.map(employee, EmployeeDto.class);
         EmployeeDto empDto = EmployeeMapper.MAPPER.MapToEmpDto(employee);
-        return empDto;
+
+        ApiResponseDto apiResponseDto = new ApiResponseDto();
+        apiResponseDto.setEmp(empDto);
+        apiResponseDto.setDepartmentDto(departmentDto);
+        return apiResponseDto;
     }
 }

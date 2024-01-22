@@ -1,6 +1,7 @@
 package net.floppy.employeeservice.controller;
 
 import lombok.AllArgsConstructor;
+import net.floppy.employeeservice.dto.ApiResponseDto;
 import net.floppy.employeeservice.dto.EmployeeDto;
 import net.floppy.employeeservice.service.EmployeeService;
 import org.springframework.http.HttpStatus;
@@ -22,9 +23,9 @@ public class EmployeeController {
     }
 
     @GetMapping("{emp_id}")
-    public ResponseEntity<EmployeeDto> getEmpById(@PathVariable("emp_id") Long empId)
+    public ResponseEntity<ApiResponseDto> getEmpById(@PathVariable("emp_id") Long empId)
     {
-        EmployeeDto empDto = employeeService.getEmpById(empId);
-        return new ResponseEntity<>(empDto,HttpStatus.OK);
+        ApiResponseDto apiResponseDto = employeeService.getEmpById(empId);
+        return new ResponseEntity<>(apiResponseDto,HttpStatus.OK);
     }
 }
