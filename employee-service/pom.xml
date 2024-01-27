@@ -79,6 +79,11 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
+
+		<dependency> <!--added for message broker RabbitMQ-->
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+		</dependency>
 	</dependencies>
 	<!--added for cloud Openfeign to make microservice communication-->
 	<dependencyManagement>
