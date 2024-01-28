@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import net.floppy.employeeservice.dto.ApiResponseDto;
 import net.floppy.employeeservice.dto.DepartmentDto;
 import net.floppy.employeeservice.dto.EmployeeDto;
+import net.floppy.employeeservice.dto.OrganizationDto;
 import net.floppy.employeeservice.entity.Employee;
 import net.floppy.employeeservice.exception.ResourceNotFoundException;
 import net.floppy.employeeservice.mapper.EmployeeMapper;
@@ -26,6 +27,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 //    private RestTemplate restTemplate;
     private WebClient webClient;
     private APIFeignClient apiFeignClient;
+
+    private Organization_FeignClient organizationFeignClient;
     private EmployeeRepository employeeRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
@@ -72,6 +75,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         DepartmentDto departmentDto = webClient.get().uri("http://localhost:8080/api/departments/"+
          employee.getDepartmentCode()).retrieve().bodyToMono(DepartmentDto.class).block();
 
+        OrganizationDto organizationDto = organizationFeignClient.getByOrgCode(employee.getOrganizationCode());
    /*SPRING CLOUD OPENFEIGN*/
 //        DepartmentDto departmentDto = apiFeignClient.GetDepartmentCode(employee.getDepartmentCode());
 
@@ -88,6 +92,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         ApiResponseDto apiResponseDto = new ApiResponseDto();
         apiResponseDto.setEmp(empDto);
         apiResponseDto.setDepartmentDto(departmentDto);
+        apiResponseDto.setOrganizationDto(organizationDto);
         return apiResponseDto;
     }
 
