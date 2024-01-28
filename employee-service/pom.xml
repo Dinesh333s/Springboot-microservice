@@ -110,6 +110,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
+
+		<dependency> <!--added for Swagger UI-->
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+
 	</dependencies>
 	<!--added for cloud Openfeign to make microservice communication-->
 	<dependencyManagement>
